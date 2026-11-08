@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="color-scheme" content="light">
+<title>JTJTJTJT</title>
+<meta name="application-name" content="JTJTJTJT">
+<meta name="apple-mobile-web-app-title" content="JTJTJTJT">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#c0a882">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=Bodoni+Moda:wght@400;600&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:"Philosykos";src:url(fonts/Philosykos.woff2) format("woff2"),url(fonts/Philosykos.otf) format("opentype");font-display:swap}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light;--bg:#f5ede1;--card:#fbf7f0;--bd:#dccdb7;--fg:#2b1216;--mut:#6f5558;--ac:#7b1e32;--ac2:#a02a44;--warm:#7b1e32;--felt:#ece1d0}
+html, body {
+  scroll-padding-top:env(safe-area-inset-top,0px);
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  position:fixed;
+  touch-action:none;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  user-select:none;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.5 "Bricolage Grotesque",system-ui,sans-serif}
+main{max-width:960px;margin:0 auto;padding:18px 14px 40px;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch}
+h1{font-family:"Philosykos","Bodoni Moda","Didot",serif;text-align:center;text-transform:uppercase;font-weight:400;font-size:clamp(34px,9vw,64px);line-height:1.05;margin:8px 0 6px;letter-spacing:.06em}
+.sub{text-align:center}#home>.bar{justify-content:center}
+h2{margin:0 0 12px;font-size:24px}
+.sub,.note{color:var(--mut)}.note{font-size:14px}
+button,select,.file{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:9px 14px;cursor:pointer;touch-action:manipulation}
+button:hover,.file:hover{border-color:var(--ac2)}
+button.p,.file.p{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:600}
+button.p:hover,.file.p:hover{background:#5f1626}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,select:focus-visible,.file:focus-within,input:focus-visible{outline:3px solid var(--ac2);outline-offset:2px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.bar .sp{flex:1}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bd)}
+.row input[type=checkbox]{width:22px;height:22px;accent-color:var(--ac)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:12px}
+.card{padding:0;overflow:hidden;text-align:left;display:block;width:100%}
+.card img{display:block;width:100%;height:110px;object-fit:cover;background:#eee}
+.card span{display:block;padding:8px 10px;font-size:14px;color:var(--mut)}
+.res{display:flex;align-items:center;gap:12px;max-width:420px;margin:14px 0;border-color:var(--ac)}
+.res img{width:96px;height:72px;flex:none}.res span{color:var(--fg)}
+.stage{flex:1;min-height:0;background:var(--felt);border:1px solid var(--bd);border-radius:14px;overflow:hidden;touch-action:none}
+#game{position:fixed;top:0;left:0;right:0;bottom:0;height:100dvh;z-index:5;background:var(--bg);display:flex;flex-direction:column;gap:8px;padding:calc(8px + env(safe-area-inset-top,0px)) 10px calc(8px + env(safe-area-inset-bottom,0px));touch-action:none}
+#game .bar{margin:0}
+body.play{overflow:hidden;overscroll-behavior:none;touch-action:none}
+.zm{display:inline-flex;gap:6px;align-items:center}
+.stage svg{display:block;width:100%;height:100%;touch-action:none;user-select:none;-webkit-user-select:none;will-change:transform}
+.pc{cursor:grab;will-change:transform}.pc.done{cursor:default}
+.pc.dragging{filter:drop-shadow(0 3px 5px rgba(0,0,0,.45))}
+.pv{display:block;max-width:100%;max-height:260px;border-radius:12px;margin:12px 0;border:1px solid var(--bd)}
+.ov{position:fixed;inset:0;z-index:20;background:rgba(43,18,22,.55);display:flex;align-items:center;justify-content:center;padding:calc(16px + env(safe-area-inset-top,0px)) 16px 16px}
+.box{background:var(--bg);border:1px solid var(--bd);border-radius:16px;padding:20px;width:100%;max-width:460px;max-height:100%;overflow:auto}
+.box img{width:100%;border-radius:10px;margin-bottom:10px}
+.big{font-size:28px;font-weight:800;color:var(--warm)}
+.hide{display:none!important}
+input:not([type=checkbox]):not([type=file]){font:inherit;color:var(--fg);background:#fff;border:1px solid var(--bd);border-radius:10px;padding:9px 12px;width:58%;user-select:text;-webkit-user-select:text;touch-action:auto}
+.card small{color:var(--ac)}
+.av{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ac);color:#fff;font-weight:700;font-size:13px;margin-right:6px;vertical-align:middle}
+.av.big{width:56px;height:56px;font-size:26px;margin:0}
+.ct{position:relative}.dl{position:absolute;top:6px;right:6px;width:32px;height:32px;display:grid;place-items:center;background:var(--card);border:1px solid var(--bd);border-radius:50%}
+.dl:hover{border-color:var(--ac2)}
+.rec{border-collapse:collapse;width:100%;font-size:14px}.rec th,.rec td{padding:6px 10px;border-bottom:1px solid var(--bd);text-align:left;white-space:nowrap}
+</style>
+</head>
+<body>
+<main>
+<section id="home">
+  <h1>Mes puzzles</h1>
+  <p class="sub">Transforme une photo en puzzle, reprends-le quand tu veux.</p>
+  <div class="bar"><button class="p" id="new">Nouveau puzzle</button><button id="addp">Ajouter un puzzle</button><button id="pf">Se connecter</button></div>
+  <div id="res"></div>
+  <div id="cat" class="hide"><h2 style="margin-top:22px">Puzzles proposés</h2><div id="catg" class="grid"></div></div>
+  <h2 style="margin-top:22px">Bibliothèque</h2>
+  <p id="lemp" class="note">Tes puzzles terminés apparaîtront ici.</p>
+  <div id="lib" class="grid"></div>
+</section>
+
+<section id="setup" class="hide">
+  <div class="bar"><button id="sb">← Retour</button></div>
+  <h2>Nouveau puzzle</h2>
+  <label class="file p">Choisir une photo<input id="f" type="file" accept="image/*" hidden></label>
+  <img id="pv" class="pv hide" alt="Photo choisie">
+  <div id="set"></div>
+  <div class="bar"><button class="p" id="go" disabled>Commencer</button></div>
+</section>
+
+<section id="game" class="hide">
+  <div class="bar">
+    <button id="gb">← Accueil</button>
+    <button id="ds">Disperser</button>
+    <button id="op">Options</button>
+    <span class="zm"><button id="zo" aria-label="Zoom arrière">−</button><span id="zl">100%</span><button id="zi" aria-label="Zoom avant">+</button></span>
+    <span class="sp"></span><b id="cnt"></b>
+  </div>
+  <div class="stage"><svg id="sv" xmlns="http://www.w3.org/2000/svg"></svg></div>
+</section>
+
+<div id="mod" class="ov hide"></div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+// Affiche les erreurs à l'écran (aide au dépannage)
+function dbg(m){let b=document.getElementById('dbg');if(!b){b=document.createElement('div');b.id='dbg';b.style.cssText='position:fixed;left:8px;right:8px;bottom:8px;z-index:99999;background:#7b1e32;color:#fff;padding:10px;border-radius:10px;font:13px/1.4 sans-serif;white-space:pre-wrap;user-select:text';b.onclick=()=>b.remove();(document.body||document.documentElement).appendChild(b)}b.textContent+=(b.textContent?'\n':'')+m}
+addEventListener('error',e=>dbg('Erreur : '+e.message));
+addEventListener('unhandledrejection',e=>dbg('Erreur : '+(e.reason&&e.reason.message||e.reason)));
+// Prévention globale des gestes iOS PWA
+document.addEventListener('touchmove', function(e) {
+  if (document.body.classList.contains('play')) e.preventDefault();
+}, { passive: false });
+document.addEventListener('gesturestart', function(e) {
+  if (document.body.classList.contains('play')) e.preventDefault();
+}, { passive: false });
+
+const $=s=>document.querySelector(s),NS=[12,24,48,96,150,200,300];
+
+/* Stockage (IndexedDB, avec repli mémoire) */
+const mem={};
+const idb=new Promise(r=>{try{const q=indexedDB.open('puzzle',1);q.onupgradeneeded=()=>q.result.createObjectStore('kv',{keyPath:'k'});q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)}catch(e){r(null)}});
+async function put(k,v){mem[k]=v;const d=await idb;if(d)try{d.transaction('kv','readwrite').objectStore('kv').put({k,v})}catch(e){}}
+async function get(k){const d=await idb;if(!d)return mem[k];return new Promise(r=>{try{const q=d.transaction('kv').objectStore('kv').get(k);q.onsuccess=()=>r(q.result?q.result.v:undefined);q.onerror=()=>r(mem[k])}catch(e){r(mem[k])}})}
+async function del(k){delete mem[k];const d=await idb;if(d)try{d.transaction('kv','readwrite').objectStore('kv').delete(k)}catch(e){}}
+async function all(pre){const d=await idb;if(!d)return Object.keys(mem).filter(k=>k.startsWith(pre)).map(k=>mem[k]);return new Promise(r=>{try{const q=d.transaction('kv').objectStore('kv').getAll();q.onsuccess=()=>r(q.result.filter(x=>x.k.startsWith(pre)).map(x=>x.v));q.onerror=()=>r([])}catch(e){r([])}})}
+
+/* Outils */
+const rng=s=>()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+const f=p=>p.x.toFixed(1)+' '+p.y.toFixed(1);
+const fmt=ms=>{const s=Math.round(ms/1000);return Math.floor(s/60)+' min '+String(s%60).padStart(2,'0')+' s'};
+const loadImg=src=>new Promise((r,j)=>{const i=new Image();try{if(/^https?:/.test(src)&&new URL(src,location.href).origin!==location.origin)i.crossOrigin='anonymous'}catch(e){}i.onload=()=>r(i);i.onerror=()=>j(new Error('image'));i.src=src});
+async function thumb(src,max=360){const im=await loadImg(src),k=max/Math.max(im.width,im.height),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.8)}
+function edge(A,B,s,j){
+  if(!s)return[A,B,B,B];
+  const dx=B.x-A.x,dy=B.y-A.y,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,nx=-uy,ny=ux;
+  const P=(t,h)=>({x:A.x+ux*L*(t+j)+nx*L*h*s,y:A.y+uy*L*(t+j)+ny*L*h*s}),a=P(.37,0);
+  return[A,a,a,a,P(.40,.04),P(.30,.10),P(.32,.17),P(.30,.27),P(.70,.27),P(.68,.17),P(.70,.10),P(.60,.04),P(.63,0),B,B,B];
+}
+function dd(l,first){let s=first?'M'+f(l[0]):'';for(let i=1;i<l.length;i+=3)s+='C'+f(l[i])+' '+f(l[i+1])+' '+f(l[i+2]);return s}
+function grid(cols,rows,W,H,sd){
+  const R=rng(sd),w=W/cols,h=H/rows,Hs=[],Vs=[],sg=()=>R()<.5?-1:1;
+  for(let r=0;r<=rows;r++){Hs[r]=[];for(let c=0;c<cols;c++)Hs[r][c]=edge({x:c*w,y:r*h},{x:(c+1)*w,y:r*h},r==0||r==rows?0:sg(),(R()-.5)*.08)}
+  for(let r=0;r<rows;r++){Vs[r]=[];for(let c=0;c<=cols;c++)Vs[r][c]=edge({x:c*w,y:r*h},{x:c*w,y:(r+1)*h},c==0||c==cols?0:sg(),(R()-.5)*.08)}
+  return{Hs,Vs,w,h};
+}
+function piecePath(g,r,c){const rv=a=>[...a].reverse();return dd(g.Hs[r][c],1)+dd(g.Vs[r][c+1],0)+dd(rv(g.Hs[r+1][c]),0)+dd(rv(g.Vs[r][c]),0)+'Z'}
+function dims(n,ar){const cols=Math.max(2,Math.round(Math.sqrt(n*ar)));return[cols,Math.max(2,Math.round(n/cols))]}
+
+/* État */
+let S={n:48,rot:false,ghost:true},cur=null,G=null,drag=null,pan=null,Z=1;
+const show=id=>{['home','setup','game'].forEach(x=>$('#'+x).classList.toggle('hide',x!=id));document.body.classList.toggle('play',id=='game')};
+const closeMod=()=>$('#mod').classList.add('hide');
+const openMod=h=>{$('#mod').innerHTML='<div class="box">'+h+'</div>';$('#mod').classList.remove('hide')};
+const optHTML=(p,v)=>`<label class="row">Nombre de pièces<select id="${p}n">${NS.map(x=>`<option${x==v.n?' selected':''}>${x}</option>`).join('')}</select></label>
+<label class="row">Pièces à faire tourner (90° au toucher)<input type="checkbox" id="${p}r"${v.rot?' checked':''}></label>
+<label class="row">Aperçu en filigrane<input type="checkbox" id="${p}g"${v.ghost?' checked':''}></label>`;
+
+/* Accueil */
+async function home(){
+  G=null;closeMod();show('home');
+  const sg=await get('game');
+  $('#res').innerHTML=sg?`<button class="card res" id="rs"><img src="${sg.thumb||''}" alt=""><span><b>Reprendre le puzzle</b><br>${sg.P.filter(p=>p.d).length} / ${sg.n} pièces placées</span></button>`:'';
+  if(sg)$('#rs').onclick=async()=>{G={...sg,img:await get('img:'+sg.id)};start()};
+  const L=(await all('lib:')).sort((a,b)=>b.date-a.date);
+  $('#lib').innerHTML=L.map(x=>`<button class="card it" data-id="${x.id}"><img src="${x.thumb}" alt="Puzzle terminé"><span>${x.n} pièces · ${fmt(x.time)}</span></button>`).join('');
+  $('#lemp').classList.toggle('hide',L.length>0);
+  document.querySelectorAll('.it').forEach(b=>b.onclick=()=>libView(L.find(x=>x.id==b.dataset.id)));
+}
+async function libView(x){
+  const src=await get('img:'+x.id);
+  openMod(`${src?`<img src="${src}" alt="Puzzle terminé">`:''}<p>${x.n} pièces · ${fmt(x.time)} · ${new Date(x.date).toLocaleDateString('fr-FR')}</p>
+  <div class="bar"><button class="p" id="rp"${src?'':' disabled'}>Rejouer cette photo</button><button id="rm">Supprimer</button><button id="cl">Fermer</button></div>`);
+  $('#cl').onclick=closeMod;
+  $('#rp').onclick=()=>{closeMod();openSetup(src)};
+  $('#rm').onclick=async()=>{await del('lib:'+x.id);await del('img:'+x.id);home()};
+}
+
+/* Réglages avant partie */
+function openSetup(src){
+  cur=src||null;$('#set').innerHTML=optHTML('s',S);setPv();show('setup');
+}
+function setPv(){const p=$('#pv');p.classList.toggle('hide',!cur);if(cur)p.src=cur;$('#go').disabled=!cur}
+$('#new').onclick=()=>openSetup(null);
+$('#sb').onclick=home;
+$('#f').onchange=e=>{
+  const fl=e.target.files[0];if(!fl)return;const fr=new FileReader();
+  fr.onload=async()=>{
+    const im=await loadImg(fr.result),k=Math.min(1,1200/Math.max(im.width,im.height)),c=document.createElement('canvas');
+    c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
+    c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+    cur=c.toDataURL('image/jpeg',.82);setPv()
+  };
+  fr.readAsDataURL(fl);
+};
+$('#go').onclick=async()=>{
+  S={n:+$('#sn').value,rot:$('#sr').checked,ghost:$('#sg').checked};put('settings',S);
+  await dropOld();newGame(cur);
+};
+async function dropOld(){const o=await get('game');if(o){await del('img:'+o.id);await del('game')}}
+
+/* Partie */
+async function newGame(src){
+  const im=await loadImg(src),iw=im.width,ih=im.height,[cols,rows]=dims(S.n,iw/ih);
+  const sc=Math.min(900/iw,600/ih),W=Math.round(iw*sc),H=Math.round(ih*sc),m=Math.round(Math.min(W,H)*.3);
+  const id=Date.now().toString(36),sd=Math.floor(Math.random()*1e9),R=rng(sd+5),w=W/cols,h=H/rows;
+  G={id,n:cols*rows,cols,rows,seed:sd,W,H,m,rot:S.rot,ghost:S.ghost,elapsed:0,img:src,P:[]};
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++)G.P.push({r,c,x:(R()*(W+2*m-1.4*w)-m)-c*w,y:(R()*(H+2*m-1.4*h)-m)-r*h,a:S.rot?90*Math.floor(R()*4):0,g:r*cols+c,d:0});
+  await put('img:'+id,src);
+  thumb(src).then(t=>{if(G&&G.id==id){G.thumb=t;save()}});
+  start();
+}
+const tf=p=>`translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${p.a} ${((p.c+.5)*G.g.w).toFixed(1)} ${((p.r+.5)*G.g.h).toFixed(1)})`;
+const setT=p=>p.el.setAttribute('transform',tf(p));
+function start(){G.P.forEach(p=>p.a=Math.round(p.a/90)*90%360);G.t0=Date.now();render();show('game');save()}
+function render(){
+  const{W,H,m,cols,rows,seed}=G,g=G.g=grid(cols,rows,W,H,seed),sv=$('#sv');
+  G.snap=Math.max(Math.min(g.w,g.h)*.28,7);
+  let defs=`<image id="ph" href="${G.img}" width="${W}" height="${H}" preserveAspectRatio="none"/>`,fr='',dn='';
+  G.P.forEach((p,i)=>{
+    const d=piecePath(g,p.r,p.c);defs+=`<clipPath id="c${i}"><path d="${d}"/></clipPath>`;
+    const e=`<g class="pc${p.d?' done':''}" data-i="${i}" transform="${tf(p)}"><g clip-path="url(#c${i})"><use href="#ph"/></g><path d="${d}" fill="none" stroke="rgba(0,0,0,.5)" stroke-width="1"/></g>`;
+    p.d?dn+=e:fr+=e;
+  });
+  G.base=[-m,-m,W+2*m,H+2*m];resetView();
+  sv.innerHTML=`<defs>${defs}</defs><rect width="${W}" height="${H}" fill="none" stroke="#9c4a5a" stroke-opacity=".6" stroke-dasharray="6 5"/><use id="gho" href="#ph" opacity=".16"/><g id="dn">${dn}</g><g id="fr">${fr}</g>`;
+  sv.querySelectorAll('.pc').forEach(e=>G.P[+e.dataset.i].el=e);
+  ghost();cnt();
+}
+const ghost=()=>{const e=$('#gho');if(e)e.style.display=G.ghost?'':'none'};
+const cnt=()=>$('#cnt').textContent=G.P.filter(p=>p.d).length+' / '+G.n;
+function save(){
+  if(!G)return;const{img,g,el,...rest}=G;
+  put('game',{...rest,elapsed:G.elapsed+Date.now()-G.t0,P:G.P.map(({r,c,x,y,a,g,d})=>({r,c,x,y,a,g,d}))});
+}
+
+/* Gestion tactile et zoom fluide via RequestAnimationFrame */
+const sv=$('#sv'),ptrs=new Map(),V={Z:1,cx:0,cy:0};let pinch=null,pendingUpdate=false,lastMoveEvent=null;
+const clampv=(a,b,c)=>Math.max(b,Math.min(c,a));
+
+function applyView(){
+  const[bx,by,bw,bh]=G.base;
+  if(V.Z<=1){V.cx=bx+bw/2;V.cy=by+bh/2}
+  V.cx=clampv(V.cx,bx,bx+bw);V.cy=clampv(V.cy,by,by+bh);
+  const w=bw/V.Z,h=bh/V.Z;
+  sv.setAttribute('viewBox',`${V.cx-w/2} ${V.cy-h/2} ${w} ${h}`);
+  $('#zl').textContent=Math.round(V.Z*100)+'%';
+}
+function resetView(){V.Z=1;applyView()}
+function zoomTo(Zn,fx,fy){Zn=clampv(Zn,1,8);V.cx=fx-(fx-V.cx)*V.Z/Zn;V.cy=fy-(fy-V.cy)*V.Z/Zn;V.Z=Zn;applyView()}
+const pt=e=>{const p=sv.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(sv.getScreenCTM().inverse())};
+const scale=()=>sv.getScreenCTM().a;
+const pm=()=>{const[a,b]=[...ptrs.values()];return{d:Math.hypot(a.x-b.x,a.y-b.y),mx:(a.x+b.x)/2,my:(a.y+b.y)/2}};
+
+$('#zi').onclick=()=>G&&zoomTo(V.Z*1.5,V.cx,V.cy);
+$('#zo').onclick=()=>G&&zoomTo(V.Z/1.5,V.cx,V.cy);
+sv.addEventListener('wheel',e=>{if(!G)return;e.preventDefault();const f=pt(e);zoomTo(V.Z*Math.exp(-e.deltaY*.002),f.x,f.y)},{passive:false});
+
+sv.onpointerdown=e=>{
+  if(!G)return;
+  ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  try{sv.setPointerCapture(e.pointerId)}catch(err){}
+  e.preventDefault();
+  if(ptrs.size>=2){endDrag(false);pan=null;pinch=pm();return}
+  const el=e.target.closest('.pc'),piece=el&&G.P[+el.dataset.i];
+  if(!piece||piece.d){pan={x:e.clientX,y:e.clientY};return}
+  const p=pt(e),mem=G.P.filter(q=>q.g==piece.g);
+  drag={piece,mem,px:p.x,py:p.y,o:mem.map(q=>[q.x,q.y]),cx:e.clientX,cy:e.clientY,moved:0};
+  mem.forEach(q=>{q.el.classList.add('dragging');$('#fr').appendChild(q.el)});
+};
+
+sv.onpointermove=e=>{
+  const q=ptrs.get(e.pointerId);if(!q||!G)return;
+  q.x=e.clientX;q.y=e.clientY;
+  lastMoveEvent=e;
+  if(!pendingUpdate){
+    pendingUpdate=true;
+    requestAnimationFrame(updateFrame);
+  }
+};
+
+function updateFrame(){
+  pendingUpdate=false;
+  if(!G)return;
+  if(pinch){
+    const n=pm(),sc=scale();
+    if(sc){
+      V.cx-=(n.mx-pinch.mx)/sc;V.cy-=(n.my-pinch.my)/sc;applyView();
+      const f=pt({clientX:n.mx,clientY:n.my});
+      if(pinch.d>0)zoomTo(V.Z*n.d/pinch.d,f.x,f.y);
+    }
+    pinch=n;return;
+  }
+  if(pan&&lastMoveEvent){
+    const sc=scale();
+    if(sc){
+      V.cx-=(lastMoveEvent.clientX-pan.x)/sc;V.cy-=(lastMoveEvent.clientY-pan.y)/sc;
+      pan.x=lastMoveEvent.clientX;pan.y=lastMoveEvent.clientY;applyView();
+    }
+    return;
+  }
+  if(drag&&lastMoveEvent){
+    const p=pt(lastMoveEvent);
+    drag.moved=Math.max(drag.moved,Math.hypot(lastMoveEvent.clientX-drag.cx,lastMoveEvent.clientY-drag.cy));
+    drag.mem.forEach((m,i)=>{m.x=drag.o[i][0]+p.x-drag.px;m.y=drag.o[i][1]+p.y-drag.py;setT(m)});
+  }
+}
+
+function endDrag(tap){
+  if(!drag)return;
+  const{piece,mem,moved}=drag;
+  mem.forEach(q=>q.el.classList.remove('dragging'));
+  drag=null;
+  if(tap&&moved<6&&G.rot&&mem.length==1)piece.a=(piece.a+90)%360;
+  settle(mem);cnt();save();
+  if(G.P.every(p=>p.d))win();
+}
+const endPtr=(e,tap)=>{
+  try{sv.releasePointerCapture(e.pointerId)}catch(err){}
+  ptrs.delete(e.pointerId);
+  if(ptrs.size<2)pinch=null;
+  if(ptrs.size===0)pan=null;
+  endDrag(tap);
+};
+sv.onpointerup=e=>endPtr(e,true);
+sv.onpointercancel=e=>endPtr(e,false);
+
+const atHome=m=>m.every(q=>q.a==0)&&m.some(q=>Math.hypot(q.x,q.y)<G.snap);
+function lock(m){m.forEach(q=>{q.x=q.y=0;q.a=0;q.d=1;$('#dn').appendChild(q.el);q.el.classList.add('done');setT(q)})}
+function settle(mem){
+  if(atHome(mem))return lock(mem);
+  const t=G.snap,P=G.P,cols=G.cols;let go=true;
+  while(go&&mem.every(q=>q.a==0)){
+    go=false;
+    outer:for(const p of mem)for(const[dr,dc]of[[0,1],[0,-1],[1,0],[-1,0]]){
+      const r=p.r+dr,c=p.c+dc;if(r<0||c<0||r>=G.rows||c>=cols)continue;
+      const q=P[r*cols+c];if(q.g==p.g||q.d||q.a!=0)continue;
+      if(Math.abs(q.x-p.x)<t&&Math.abs(q.y-p.y)<t){
+        const dx=q.x-p.x,dy=q.y-p.y,og=q.g;mem.forEach(z=>{z.x+=dx;z.y+=dy});
+        P.forEach(z=>{if(z.g==og){z.g=p.g;mem.push(z)}});go=true;break outer;
+      }
+    }
+  }
+  if(atHome(mem))lock(mem);else mem.forEach(setT);
+}
+async function win(){
+  const x={id:G.id,n:G.n,date:Date.now(),time:G.elapsed+Date.now()-G.t0,thumb:G.thumb||await thumb(G.img)};
+  G=null;await put('lib:'+x.id,x);await del('game');pushRec(x);
+  openMod(`<p class="big">Bravo, puzzle terminé ! 🎉</p><img src="${x.thumb}" alt=""><p>${x.n} pièces en ${fmt(x.time)}. Il est dans ta bibliothèque.</p>
+  <div class="bar"><button class="p" id="w1">Bibliothèque</button><button id="w2">Nouveau puzzle</button></div>`);
+  $('#w1').onclick=home;$('#w2').onclick=()=>{closeMod();openSetup(null)};
+}
+
+/* Disperser */
+$('#ds').onclick=()=>{
+  if(!G)return;const{W,H,m,g}=G,seen={};
+  G.P.forEach(p=>{
+    if(p.d||seen[p.g])return;seen[p.g]=1;const mem=G.P.filter(q=>q.g==p.g);
+    const k=Math.random()*4|0,u=.15+.7*Math.random(),a=-m+Math.random()*(W+2*m),b=Math.random()*H;
+    const[cx,cy]=k==0?[a,-m*u]:k==1?[a,H+m*u]:k==2?[-m*u,b]:[W+m*u,b];
+    const dx=cx-((p.c+.5)*g.w+p.x),dy=cy-((p.r+.5)*g.h+p.y);
+    mem.forEach(q=>{q.x+=dx;q.y+=dy;setT(q)});
+  });
+  save();
+};
+
+/* Options en cours de partie */
+$('#op').onclick=()=>{
+  openMod(`<h2>Options</h2>${optHTML('m',{n:G.n,rot:G.rot,ghost:G.ghost})}
+  <div class="bar"><button id="mre">Recommencer avec ce nombre</button><button id="mab">Abandonner</button><button class="p" id="mx">Fermer</button></div>
+  <p class="note">Changer le nombre de pièces relance le puzzle avec la même photo.</p><p class="note">Zoom : pince avec deux doigts, molette ou boutons +/−. Fais glisser le fond pour te déplacer.</p>`);
+  $('#mx').onclick=closeMod;
+  $('#mg').onchange=e=>{G.ghost=S.ghost=e.target.checked;ghost();put('settings',S);save()};
+  $('#mr').onchange=e=>{
+    G.rot=S.rot=e.target.checked;put('settings',S);const k={};G.P.forEach(p=>k[p.g]=(k[p.g]||0)+1);
+    G.P.forEach(p=>{if(!p.d&&k[p.g]==1){p.a=G.rot?90*(Math.random()*4|0):0;setT(p)}});save();
+  };
+  $('#mre').onclick=async()=>{const src=G.img;S.n=+$('#mn').value;put('settings',S);closeMod();await dropOld();G=null;newGame(src)};
+  let sure=false;
+  $('#mab').onclick=async e=>{
+    if(!sure){sure=true;e.target.textContent='Confirmer l\'abandon ?';return}
+    await dropOld();home();
+  };
+};
+$('#gb').onclick=()=>{save();home()};
+document.addEventListener('visibilitychange',()=>{if(document.hidden)save()});
+
+/* Démarrage & Catalogue */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function prep(src){
+  const im=await loadImg(src),k=Math.min(1,1200/Math.max(im.width,im.height)),c=document.createElement('canvas');
+  c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
+  c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+  return c.toDataURL('image/jpeg',.82);
+}
+async function loadCat(){
+  let L=[];
+  try{const r=await fetch('puzzles/puzzles.json',{cache:'no-cache'});if(r.ok){const j=await r.json();if(Array.isArray(j))L=j.map(x=>({src:'puzzles/'+encodeURI(x.file),title:x.title}))}}catch(e){}
+  if(sb)try{
+    const{data}=await sb.from('puzzles').select('id,title,image_path,author_id,profiles(username)').order('created_at',{ascending:false});
+    if(data)L=data.map(x=>({id:x.id,path:x.image_path,mine:!!U&&x.author_id===U.id,src:sb.storage.from('puzzles').getPublicUrl(x.image_path).data.publicUrl,title:x.title,by:x.profiles&&x.profiles.username})).concat(L);
+  }catch(e){}
+  if(!L.length){$('#cat').classList.add('hide');return}
+  $('#catg').innerHTML=L.map((x,i)=>`<button class="card ct" data-i="${i}"><img loading="lazy" src="${esc(x.src)}" alt=""><span>${esc(x.title||'Puzzle')}${x.by?'<br><small>par '+esc(x.by)+'</small>':''}</span>${x.mine?'<span class="dl" role="button" aria-label="Supprimer ce puzzle">🗑</span>':''}</button>`).join('');
+  $('#cat').classList.remove('hide');
+  document.querySelectorAll('.ct').forEach(b=>b.onclick=async e=>{
+    const x=L[+b.dataset.i];
+    if(e.target.closest('.dl'))return delPuz(x);
+    try{openSetup(await prep(x.src))}catch(e){alert('Impossible de charger ce puzzle. Vérifie que le bucket « puzzles » est public et que l’adresse du projet est correcte.')}
+  });
+}
+async function delPuz(x){
+  if(!confirm('Supprimer « '+x.title+' » de la bibliothèque ?'))return;
+  const{error}=await sb.from('puzzles').delete().eq('id',x.id);
+  if(error)return alert('Suppression impossible : '+error.message);
+  await sb.storage.from('puzzles').remove([x.path]);loadCat();
+}
+
+/* Supabase : profil et ajout de puzzles */
+const SB_URL='https://fdetntrvgcwvwqxbcztb.supabase.co',SB_KEY='sb_publishable_qZMZtn5GRA4hngJsUwBlwA_yy8xf_gu';
+const sb=window.supabase?window.supabase.createClient(SB_URL,SB_KEY):null;
+let U=null,UN='',authNext=null,up=null;
+const msg=t=>{$('#am').textContent=t};
+const av=n=>`<span class="av">${esc((n||'?')[0].toUpperCase())}</span>`;
+const T=s=>Math.floor(s/60)+' min '+String(s%60).padStart(2,'0')+' s';
+const recRow=x=>({user_id:U.id,pieces:x.n,seconds:Math.round(x.time/1000),local_id:String(x.id)});
+const recOpt={onConflict:'user_id,local_id',ignoreDuplicates:true};
+async function syncLib(){const L=await all('lib:');if(L.length)await sb.from('completions').upsert(L.map(recRow),recOpt)}
+function pushRec(x){if(sb&&U)sb.from('completions').upsert(recRow(x),recOpt).then(()=>{})}
+async function prof(){
+  UN='';
+  if(U){const{data}=await sb.from('profiles').select('username').eq('id',U.id).maybeSingle();UN=data?data.username:'';syncLib()}
+  $('#pf').innerHTML=U?av(UN)+esc(UN||'Mon profil'):'Se connecter';
+  loadCat();
+}
+function authView(mode,note){
+  const su=mode==='signup',fg=mode==='forgot';
+  openMod(`<h2>${fg?'Mot de passe oublié':su?'Créer un compte':'Se connecter'}</h2>${note?`<p class="note">${note}</p>`:''}
+  ${fg?'':`<label class="row">Pseudo<input id="au" maxlength="24" autocomplete="username"></label>`}
+  ${su||fg?`<label class="row">E-mail<input id="ae" type="email" autocomplete="email"></label>`:''}
+  ${fg?'':`<label class="row">Mot de passe<input id="ap" type="password" autocomplete="${su?'new-password':'current-password'}"></label>`}
+  <p id="am" class="note" role="status"></p>
+  <div class="bar"><button class="p" id="authgo">${fg?'Envoyer le lien':su?'Créer mon compte':'Se connecter'}</button><button id="ax">Fermer</button></div>
+  <div class="bar">${mode==='login'?'<button id="m1">Créer un compte</button><button id="m2">Mot de passe oublié</button>':'<button id="m1">Retour à la connexion</button>'}</div>`);
+  $('#ax').onclick=closeMod;
+  $('#m1').onclick=()=>authView(mode==='login'?'signup':'login');
+  if($('#m2'))$('#m2').onclick=()=>authView('forgot');
+  const done=()=>{closeMod();if(authNext){const f=authNext;authNext=null;setTimeout(f,400)}};
+  $('#authgo').onclick=async()=>{try{
+    if(fg){
+      const{error}=await sb.auth.resetPasswordForEmail($('#ae').value.trim(),{redirectTo:location.origin+location.pathname});
+      return msg(error?'Échec : '+error.message:'Si un compte existe avec cet e-mail, un lien de réinitialisation vient d’être envoyé.');
+    }
+    const u=$('#au').value.trim();
+    if(su){
+      if(u.length<3)return msg('Choisis un pseudo de 3 caractères minimum.');
+      const{data,error}=await sb.auth.signUp({email:$('#ae').value.trim(),password:$('#ap').value,options:{data:{username:u}}});
+      if(error)return msg('Inscription impossible (pseudo déjà pris ?) : '+error.message);
+      return data.session?done():msg('Compte créé. Confirme ton e-mail, puis connecte-toi.');
+    }
+    msg('Connexion…');
+    const{data:em,error:re}=await sb.rpc('email_from_username',{p:u});
+    if(re)return msg('Erreur serveur : '+re.message);
+    if(!em)return msg('Pseudo ou mot de passe incorrect.');
+    const{error}=await sb.auth.signInWithPassword({email:em,password:$('#ap').value});
+    error?msg('Pseudo ou mot de passe incorrect.'):done();
+  }catch(e){msg('Erreur : '+e.message)}};
+}
+function newPwView(){
+  openMod(`<h2>Nouveau mot de passe</h2><label class="row">Mot de passe<input id="np" type="password" autocomplete="new-password"></label><p id="am" class="note" role="status"></p><div class="bar"><button class="p" id="authgo">Enregistrer</button></div>`);
+  $('#authgo').onclick=async()=>{const{error}=await sb.auth.updateUser({password:$('#np').value});if(error)return msg('Échec : '+error.message);closeMod();alert('Mot de passe modifié.')};
+}
+async function profView(){
+  openMod(`<div style="text-align:center"><span class="av big">${esc((UN||'?')[0].toUpperCase())}</span><h2>${esc(UN)}</h2></div><div id="pb"><p class="note">Chargement…</p></div>
+  <div class="bar"><button id="lo">Se déconnecter</button><button class="p" id="ax">Fermer</button></div>`);
+  $('#ax').onclick=closeMod;$('#lo').onclick=async()=>{await sb.auth.signOut();closeMod()};
+  renderProf();
+}
+async function renderProf(){
+  const box=$('#pb');if(!box)return;
+  const[fr,co]=await Promise.all([
+    sb.from('friendships').select('id,status,requester,addressee,rq:profiles!friendships_requester_fkey(username),ad:profiles!friendships_addressee_fkey(username)'),
+    sb.from('completions').select('user_id,pieces,seconds')]);
+  const F=fr.data||[],C=co.data||[],me=U.id;
+  const other=f=>f.requester===me?{id:f.addressee,n:f.ad&&f.ad.username}:{id:f.requester,n:f.rq&&f.rq.username};
+  const ok=F.filter(f=>f.status==='accepted').map(f=>({fid:f.id,...other(f)}));
+  const inc=F.filter(f=>f.status==='pending'&&f.addressee===me),out=F.filter(f=>f.status==='pending'&&f.requester===me);
+  const best={};C.forEach(r=>{const b=best[r.user_id]=best[r.user_id]||{};b[r.pieces]=Math.min(b[r.pieces]??1e9,r.seconds)});
+  const cols=[{id:me,n:'Moi'},...ok],ps=[...new Set(C.map(r=>r.pieces))].sort((a,b)=>a-b);
+  const tbl=ps.length?`<div style="overflow-x:auto"><table class="rec"><tr><th>Pièces</th>${cols.map(c=>`<th>${esc(c.n||'?')}</th>`).join('')}</tr>${ps.map(p=>{
+    const v=cols.map(c=>(best[c.id]||{})[p]),m=Math.min(...v.filter(x=>x!=null));
+    return `<tr><td>${p}</td>${v.map(x=>`<td>${x==null?'–':x===m?'<b>'+T(x)+'</b>':T(x)}</td>`).join('')}</tr>`}).join('')}</table></div>`
+    :'<p class="note">Termine un puzzle une fois connecté pour enregistrer ton premier record.</p>';
+  box.innerHTML=`<h3>Records de temps</h3>${tbl}<h3>Amis</h3>
+  ${inc.map(f=>`<div class="row"><span>${esc(other(f).n)} te demande en ami</span><span><button class="p fa" data-f="${f.id}">Accepter</button> <button class="fd" data-f="${f.id}">Refuser</button></span></div>`).join('')}
+  ${ok.map(a=>`<div class="row"><span>${av(a.n)}${esc(a.n)}</span><button class="fd" data-f="${a.fid}" aria-label="Retirer ${esc(a.n)}">✕</button></div>`).join('')}
+  ${out.map(f=>`<div class="row"><span class="note">Demande envoyée à ${esc(other(f).n)}</span><button class="fd" data-f="${f.id}">Annuler</button></div>`).join('')}
+  ${F.length?'':'<p class="note">Pas encore d’amis.</p>'}
+  <div class="row"><input id="fn" placeholder="Pseudo d’un ami" style="width:60%"><button id="fadd">Ajouter</button></div><p id="am" class="note" role="status"></p>`;
+  box.querySelectorAll('.fa').forEach(b=>b.onclick=async()=>{await sb.from('friendships').update({status:'accepted'}).eq('id',b.dataset.f);renderProf()});
+  box.querySelectorAll('.fd').forEach(b=>b.onclick=async()=>{await sb.from('friendships').delete().eq('id',b.dataset.f);renderProf()});
+  $('#fadd').onclick=async()=>{
+    const n=$('#fn').value.trim();if(!n)return;
+    const{data:pr}=await sb.from('profiles').select('id').ilike('username',n.replace(/[%_\\]/g,'\\$&')).maybeSingle();
+    if(!pr)return msg('Aucun profil avec ce pseudo.');
+    if(pr.id===me)return msg('C’est ton propre profil.');
+    if(F.some(f=>f.requester===pr.id||f.addressee===pr.id))return msg('Cet ami est déjà ajouté ou une demande est en cours.');
+    const{error}=await sb.from('friendships').insert({addressee:pr.id});
+    error?msg('Échec : '+error.message):renderProf();
+  };
+}
+function addView(){
+  if(!U){authNext=addView;return authView('login','Connecte-toi pour ajouter un puzzle.')}
+  up=null;
+  openMod(`<h2>Ajouter un puzzle</h2><p class="note">Il sera visible par tous dans « Puzzles proposés ».</p>
+  <label class="file p">Choisir une photo<input id="uf" type="file" accept="image/*" hidden></label>
+  <img id="upv" class="pv hide" alt="Photo choisie">
+  <label class="row">Titre<input id="ut" maxlength="80"></label><p id="am" class="note"></p>
+  <div class="bar"><button class="p" id="ub" disabled>Publier</button><button id="ux">Annuler</button></div>`);
+  $('#ux').onclick=closeMod;
+  $('#uf').onchange=e=>{
+    const fl=e.target.files[0];if(!fl)return;const fr=new FileReader();
+    fr.onload=async()=>{up=await prep(fr.result);$('#upv').src=up;$('#upv').classList.remove('hide');$('#ub').disabled=false};
+    fr.readAsDataURL(fl);
+  };
+  $('#ub').onclick=async()=>{
+    const t=$('#ut').value.trim();if(!t)return msg('Donne un titre à ton puzzle.');
+    $('#ub').disabled=true;msg('Envoi en cours…');
+    const path=U.id+'/'+Date.now().toString(36)+'.jpg',blob=await(await fetch(up)).blob();
+    let r=await sb.storage.from('puzzles').upload(path,blob,{contentType:'image/jpeg'});
+    if(!r.error)r=await sb.from('puzzles').insert({title:t,image_path:path});
+    if(r.error){$('#ub').disabled=false;return msg('Échec de la publication : '+r.error.message)}
+    closeMod();loadCat();
+  };
+}
+if(sb){
+  sb.auth.getSession().then(({data})=>{U=data.session?data.session.user:null;prof()});
+  sb.auth.onAuthStateChange((ev,se)=>{U=se?se.user:null;setTimeout(prof,0);if(ev==='PASSWORD_RECOVERY')setTimeout(newPwView,50)});
+  $('#pf').onclick=()=>U?profView():authView('login');
+  $('#addp').onclick=addView;
+}else{dbg('Librairie Supabase non chargée (connexion internet ou bloqueur de publicités ?). Profil et ajout de puzzles désactivés.');$('#pf').classList.add('hide');$('#addp').classList.add('hide')}
+
+get('settings').then(s=>{if(s)S={...S,...s};home();loadCat()});
+</script>
+</body>
+</html>
